@@ -43,7 +43,7 @@ const CustomDrawer = props => (
                             />
                         )}
                         label="Courses"
-                        onPress={() => {props.navigation.navigate('CoursesScreen')}}
+                        onPress={() => {props.navigation.navigate('Courses')}}
                     />
                     <DrawerItem 
                         icon={({color, size}) => (
@@ -54,7 +54,7 @@ const CustomDrawer = props => (
                             />
                         )}
                         label="Live Classes"
-                        onPress={() => {props.navigation.navigate('LiveclassScreen')}}
+                        onPress={() => {props.navigation.navigate('Live Classes')}}
                     />
                     
                     <DrawerItem 
@@ -66,7 +66,19 @@ const CustomDrawer = props => (
                             />
                         )}
                         label="Mentorship"
-                        onPress={() => {props.navigation.navigate('MentorshipScreen')}}
+                        onPress={() => {props.navigation.navigate('Mentorship')}}
+                    />
+
+                    <DrawerItem 
+                        icon={({color, size}) => (
+                            <MaterialCommunityIcons 
+                            name="pen" 
+                            color={color}
+                            size={size}
+                            />
+                        )}
+                        label="Test Series"
+                        onPress={() => {props.navigation.navigate('Test Series')}}
                     />
                 </Drawer.Section>
             </View>

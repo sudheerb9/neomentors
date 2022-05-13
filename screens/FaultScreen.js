@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function CoursesScreen() {
+export default function FaultScreen() {
   return (
     <View style={styles.container}>
-      <Text>Courses Screen</Text>
+      <Text>Live class Screen</Text>
     </View>
   );
 }

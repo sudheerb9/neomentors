@@ -1,113 +1,122 @@
-import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import HomeScreen from './screens/HomeScreen';
-import CoursesScreen from './screens/CoursesScreen';
-import LiveclassScreen from './screens/LiveclassScreen';
-import MentorshipScreen from './screens/MentorshipScreen';
-import TestseriesScreen from './screens/TestseriesScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import MyCoursesScreen from './screens/MyCoursesScreen'
-import Header from './components/HeaderComponent';
-import CustomDrawer from './components/CustomDrawer';
+import { StatusBar } from "expo-status-bar";
+import React, { Component } from "react";
+import 'react-native-gesture-handler';
+import AppWithAuth from './AppWithAuth';
+import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity} from "react-native";
 
-const Tab = createMaterialBottomTabNavigator();
+export default class App extends Component {
 
-function HomeStack({navigation}) {
-  return (
-    <Header component={HomeScreen} title = {'Home'} icon = {'menu'} navOpen={()=>{navigation.dispatch(DrawerActions.openDrawer());}}/>
-  );
+    constructor(props){
+        super(props);
+        this.state = {email: '', password: '', show: false};
+
+        this.handleemailChange = this.handleemailChange.bind(this);
+        this.handlepasswordChange = this.handlepasswordChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleemailChange = (e) =>{
+        this.setState({email: e.target.value});
+    }
+
+    handlepasswordChange = (e) =>{
+        this.setState({password: e.target.value});
+    }
+
+    handleSubmit = (e) =>{
+        if(this.state.email == 'chaitravardhan18@gmail.com' && this.state.password == 'admin_bms') {
+            this.setState({show: true});
+            e.preventDefault();
+            return <AppWithAuth/>
+        }
+    }
+
+    AppLogin = ()=>{
+        <View style={styles.container}>
+            <StatusBar style="auto" />
+            <View style={styles.inputView}>
+                <TextInput
+                style={styles.TextInput}
+                placeholder="Email."
+                placeholderTextColor="#003f5c"
+                value = {this.state.email}
+                onChangeText={this.handleemailchange}
+                />
+            </View>
+        
+            <View style={styles.inputView}>
+                <TextInput
+                style={styles.TextInput}
+                placeholder="Password."
+                placeholderTextColor="#003f5c"
+                secureTextEntry={true}
+                onChangeText={(password) => setPassword(password)}
+                />
+            </View>
+        
+            <TouchableOpacity>
+                <Text style={styles.forgot_button}>Forgot Password?</Text>
+            </TouchableOpacity>
+        
+            <TouchableOpacity style={styles.loginBtn} onPress={(e) => {handleSubmit(e)}}>
+                <Text style={styles.loginText}>LOGIN</Text>
+            </TouchableOpacity>
+        </View>
+    }
+
+    render() {
+
+        const show = this.state.show;
+    
+        let content;
+        if (show) {
+          content = <this.AppLogin/>;
+        } else {
+          content = <AppWithAuth/>;
+        }
+    
+        return <View>{content}</View>;
+    }
+
 }
-
-function CourseStack({navigation}) {
-  return (
-    <Header component={CoursesScreen} title = {'Courses'} icon = {'menu'} navOpen={()=>{navigation.dispatch(DrawerActions.openDrawer());}}/>
-  );
-}
-
-function LiveclassStack({navigation}) {
-  return (
-    <Header component={LiveclassScreen} title = {'Live class'} icon = {'menu'} navOpen={()=>{navigation.dispatch(DrawerActions.openDrawer());}}/>
-  );
-}
-
-function MentorshipStack({navigation}) {
-  return (
-    <Header component={MentorshipScreen} title = {'Mentorship'} icon = {'menu'} navOpen={()=>{navigation.dispatch(DrawerActions.openDrawer());}}/>
-  );
-}
-
-function TestseriesStack({navigation}) {
-  return (
-    <Header component={TestseriesScreen} title = {'Test Series'} icon = {'menu'} navOpen={()=>{navigation.dispatch(DrawerActions.openDrawer());}}/>
-  );
-}
-
-function MyCoursesStack({navigation}) {
-  return (
-    <Header component={MyCoursesScreen} title = {'Enrolled Courses'} icon = {'arrow-left'} navOpen={()=>{navigation.navigate('Home')}}/>
-  );
-}
-
-function ProfileStack({navigation}) {
-  return (
-    <Header component={ProfileScreen} title = {'My Profile'} icon = {'arrow-left'} navOpen={()=>{navigation.navigate('Home')}}/>
-  );
-}
-
-const Drawer = createDrawerNavigator();
-
-
-
-function Home() {
-  return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
-      <Drawer.Screen name="Home" component={HomeStack} />
-      <Drawer.Screen name="Courses" component={CourseStack} />
-      <Drawer.Screen name="Live Classes" component={LiveclassStack} />
-      <Drawer.Screen name="Mentorship" component={MentorshipStack} />
-      <Drawer.Screen name="Test Series" component={TestseriesStack} />
-    </Drawer.Navigator>
-  );
-}
-
-export default function App() {
-  return (
-      <NavigationContainer>
-        <Tab.Navigator shifting={true} sceneAnimationEnabled={false} barStyle={{ backgroundColor: '#3e46b3' }}>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="home" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="My Courses"
-            component={MyCoursesStack}
-            options={{
-              tabBarLabel: 'My Courses',
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="book" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Account"
-            component={ProfileStack}
-            options={{
-              tabBarLabel: 'Profile',
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="account" color={color} size={26} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-  );
-}
+    
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    
+    inputView: {
+        backgroundColor: "#FFC0CB",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+    
+        alignItems: "center",
+    },
+    
+    TextInput: {
+        height: 50,
+        flex: 1,
+        padding: 10,
+        marginLeft: 20,
+    },
+    
+    forgot_button: {
+        height: 30,
+        marginBottom: 30,
+    },
+    
+    loginBtn: {
+        width: "80%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 40,
+        backgroundColor: "#FF1493",
+    },
+});
